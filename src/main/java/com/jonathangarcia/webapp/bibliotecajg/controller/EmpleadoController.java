@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,22 +45,28 @@ public class EmpleadoController {
         }
     }
 
-    @PutMapping("/")
-    public ResponseEntity<Map<String, Boolean>> agregarEmpelado(@RequestBody Empleado empleado){
-        Map<String, Boolean> response = new HashMap<>();
+    @PostMapping("/empleado")
+    public ResponseEntity<Map<String, String>> agregarEmpelado(@RequestBody Empleado empleado){
+        Map<String, String> response = new HashMap<>();
         try {
-            empleadoService.guardarEmpleado(empleado);
-            response.put("Se agrego el empleado con exito", Boolean.TRUE);
-            return ResponseEntity.ok(response);
+            if (!empleadoService.verificarDpiDuplicado(empleado)) {
+                empleadoService.guardarEmpleado(empleado);
+                response.put("Se agrego el empleado con exito", "Empleado con exito");
+                return ResponseEntity.ok(response);
+            }else{
+                response.put("message", "Error");
+                response.put("err", "El dpi se encuentra duplicado");
+                return ResponseEntity.badRequest().body(response);
+            }
         } catch (Exception e) {
-            response.put("Se agrego el empleado con exito", Boolean.FALSE);
+            response.put("Se agrego el empleado con exito", "Hubo un error al crear el empleado");
             return ResponseEntity.badRequest().body(response);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity <Map<String, Boolean>> editarEmpleado(@PathVariable Long id, @RequestBody Empleado empleadoNuevo){
-        Map<String, Boolean> response = new HashMap<>();
+    public ResponseEntity <Map<String, String>> editarEmpleado(@PathVariable Long id, @RequestBody Empleado empleadoNuevo){
+        Map<String, String> response = new HashMap<>();
         try {
             Empleado empleado = empleadoService.buscarEmpleados(id);
             empleado.setNombre(empleadoNuevo.getNombre());
@@ -67,10 +74,17 @@ public class EmpleadoController {
             empleado.setTelefono(empleadoNuevo.getTelefono());
             empleado.setDpi(empleadoNuevo.getDpi());
             empleado.setDireccion(empleadoNuevo.getDireccion());
-            response.put("Se edito los datos con exito", Boolean.TRUE);
-            return ResponseEntity.ok(response);
+            if (!empleadoService.verificarDpiDuplicado(empleadoNuevo)) {
+                empleadoService.guardarEmpleado(empleadoNuevo);
+                response.put("message", "Se edito los datos con exito");
+                return ResponseEntity.ok(response);
+            } else{
+                response.put("message", "Error");
+                response.put("err", "El dpi se encuentra duplicado");
+                return ResponseEntity.badRequest().body(response);
+            }
         } catch (Exception e) {
-            response.put("Se edito los datos con exito", Boolean.FALSE);
+            response.put("Se edito los datos con exito", "Se edito los datos con exito");
             return ResponseEntity.badRequest().body(response);
         }
     }

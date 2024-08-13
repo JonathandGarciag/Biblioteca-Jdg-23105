@@ -12,4 +12,7 @@ public interface IEmpleadoService {
     public Empleado buscarEmpleados(Long id);
 
     public void eliminarEmpleado(Empleado empleado);
+
+    public Boolean verificarDpiDuplicado(Empleado empleadoNuevo);
+
 }
