@@ -21,8 +21,8 @@ public class Prestamo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Data fechaPrestamo;
-    private Data fechaDevolucion;
+    private Date fechaPrestamo;
+    private Date fechaDevolucion;
     private Boolean vigencia;
     @ManyToOne
     private Empleado empleado;

@@ -3,10 +3,12 @@ package com.jonathangarcia.webapp.bibliotecajg.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.jonathangarcia.webapp.bibliotecajg.model.Prestamo;
 import com.jonathangarcia.webapp.bibliotecajg.repository.PrestamoRepository;
 
+@Service
 public class PrestamoService implements IPrestamoService{
     @Autowired
     PrestamoRepository prestamoRepository;

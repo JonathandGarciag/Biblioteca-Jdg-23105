@@ -40,8 +40,9 @@ public class CategoriaService implements ICategoriaService{
         List<Categoria> categorias = listarCategorias();
 
         for (Categoria c : categorias){
-            if(c.getNombreCategoria().equals(categoria.getNombreCategoria()) && !c.getId().equals(categoria.getId()))    
-            flag = Boolean.TRUE;
+            if(c.getNombreCategoria().equals(categoria.getNombreCategoria()) && !c.getId().equals(categoria.getId())){
+               flag = Boolean.TRUE;
+            }
         }
         return flag;
     }
