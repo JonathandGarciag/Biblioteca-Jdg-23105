@@ -9,10 +9,9 @@ public interface IEmpleadoService {
 
     public void guardarEmpleado(Empleado empleado);
 
-    public Empleado buscarEmpleados(Long id);
+    public Empleado buscarEmpleadoPorId(Long id);
 
     public void eliminarEmpleado(Empleado empleado);
 
     public Boolean verificarDpiDuplicado(Empleado empleadoNuevo);
-
 }

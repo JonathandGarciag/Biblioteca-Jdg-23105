@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,14 +23,16 @@ import com.jonathangarcia.webapp.bibliotecajg.service.LibroService;
 @Controller
 @RestController
 @RequestMapping("libro")
+@CrossOrigin(value = "http://127.0.0.1:5500")
 public class LibroController {
+
     @Autowired
     LibroService libroService;
 
     @GetMapping("/")
     public ResponseEntity<List<Libro>> listarLibros(){
         try {
-            return ResponseEntity.ok(libroService.listaLibros());   
+            return ResponseEntity.ok(libroService.listarLibros());   
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -72,6 +75,7 @@ public class LibroController {
             libro.setNumEstanteria(libroNuevo.getNumEstanteria());
             libro.setCluster(libroNuevo.getCluster());
             libro.setCategoria(libroNuevo.getCategoria());
+            libroService.guardarLibro(libro);
             response.put("La edición del Libro ha sido Exitosa", Boolean.TRUE);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -93,5 +97,4 @@ public class LibroController {
             return ResponseEntity.badRequest().body(response);    
         }
     }
-
 }

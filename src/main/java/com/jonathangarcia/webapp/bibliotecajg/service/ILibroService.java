@@ -5,7 +5,7 @@ import java.util.List;
 import com.jonathangarcia.webapp.bibliotecajg.model.Libro;
 
 public interface ILibroService {
-    public List<Libro> listaLibros();
+    public List<Libro> listarLibros();
 
     public Libro guardarLibro(Libro libro);
 

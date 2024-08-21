@@ -1,5 +1,6 @@
 package com.jonathangarcia.webapp.bibliotecajg.model;
 
+import java.sql.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,7 @@ import com.jonathangarcia.webapp.bibliotecajg.service.ClienteService;
 @Controller
 @RestController
 @RequestMapping("cliente")
+@CrossOrigin(value = "http://127.0.0.1:5500")
 public class ClienteController {
 
     @Autowired
@@ -35,7 +37,7 @@ public class ClienteController {
     @GetMapping("/dpi={dpi}") //Buscar
     public ResponseEntity<Cliente> buscarClientePorDpi(@PathVariable Long dpi){
         try{
-            Cliente cliente = clienteService.buscarClientePorDpi(dpi);
+            Cliente cliente = clienteService.buscarClientePorId(dpi);
             return ResponseEntity.ok(cliente);
         } catch(Exception e){
             return ResponseEntity.badRequest().body(null);
@@ -43,7 +45,7 @@ public class ClienteController {
     }
 
     @PostMapping("/") //Guardar
-    public ResponseEntity<Map<String, Boolean>> guardarCliente(@RequestBody Cliente cliente){
+    public ResponseEntity<Map<String, Boolean>> agregarCliente(@RequestBody Cliente cliente){
         Map<String, Boolean> response = new HashMap<>();
         try{  //Bien
             clienteService.guardarCliente(cliente);
@@ -59,7 +61,7 @@ public class ClienteController {
     public ResponseEntity<Map<String, String>> editarCliente(@PathVariable Long dpi, @RequestBody Cliente clienteNuevo){
         Map<String, String> response = new HashMap<>();
         try {  
-            Cliente cliente = clienteService.buscarClientePorDpi(dpi);  
+            Cliente cliente = clienteService.buscarClientePorId(dpi);  
             cliente.setNombre(clienteNuevo.getNombre());
             cliente.setApellido(clienteNuevo.getApellido());
             cliente.setTelefono(clienteNuevo.getTelefono());
@@ -77,7 +79,7 @@ public class ClienteController {
     public ResponseEntity<Map<String, String>> eliminarCliente(@PathVariable Long dpi){
         Map<String, String> response = new HashMap<>();
         try{  
-            Cliente cliente = clienteService.buscarClientePorDpi(dpi);
+            Cliente cliente = clienteService.buscarClientePorId(dpi);
             clienteService.eliminarCliente(cliente);
             response.put("Message", "El cliente se ha eliminado");
             return ResponseEntity.ok(response);

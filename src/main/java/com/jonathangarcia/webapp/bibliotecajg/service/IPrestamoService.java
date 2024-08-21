@@ -10,7 +10,7 @@ public interface IPrestamoService {
  
     public Prestamo buscarPrestamoPorId(Long id);
  
-    public Prestamo guardPrestamo(Prestamo prestamo);
+    public Prestamo guardarPrestamo(Prestamo prestamo);
  
     public void eliminarPrestamo(Prestamo prestamo);
 

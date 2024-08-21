@@ -1,11 +1,13 @@
 package com.jonathangarcia.webapp.bibliotecajg.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +23,13 @@ import com.jonathangarcia.webapp.bibliotecajg.service.PrestamoService;
 @Controller
 @RestController
 @RequestMapping("prestamo")
+@CrossOrigin(value = "http://127.0.0.1:5500")
 public class PrestamoController {
 
     @Autowired
     PrestamoService prestamoService;
 
-    @GetMapping("/prestamos")
+    @GetMapping("/")
     public ResponseEntity<?> listarPrestamos() {
         Map<String, String> response = new HashMap<>();
         try {
@@ -34,20 +37,6 @@ public class PrestamoController {
         } catch (Exception e) {
             response.put("message", "Error");
             response.put("err", "No se encontró una lista de libros.");
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
-    @PostMapping("/prestamo")
-    public ResponseEntity<Map<String, String>> agregarPrestamo(@RequestBody Prestamo prestamo) {
-        Map<String, String> response = new HashMap<>();
-        try {
-            prestamoService.guardPrestamo(prestamo);
-            response.put("message", "Prestamo creado con éxito");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            response.put("message", "Error");
-            response.put("err", "Hubo un error al crear el prestamo");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -60,6 +49,20 @@ public class PrestamoController {
             return ResponseEntity.ok(prestamo);
         } catch (Exception e) {
             response.put("El prestamo no se pudo encontrar", Boolean.FALSE);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<Map<String, String>> agregarPrestamo(@RequestBody Prestamo prestamo) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            prestamoService.guardarPrestamo(prestamo);
+            response.put("message", "Prestamo creado con éxito");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "Error");
+            response.put("err", "Hubo un error al crear el prestamo");
             return ResponseEntity.badRequest().body(response);
         }
     }

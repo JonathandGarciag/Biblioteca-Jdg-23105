@@ -24,7 +24,7 @@ public class EmpleadoService implements IEmpleadoService{
     }
 
     @Override
-    public Empleado buscarEmpleados(Long id) {
+    public Empleado buscarEmpleadoPorId(Long id) {
         return empleadoRepository.findById(id).orElse(null);
     }
 
@@ -45,6 +45,4 @@ public class EmpleadoService implements IEmpleadoService{
         }
         return flag;
     }
-
-
 }

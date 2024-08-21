@@ -22,7 +22,7 @@ public class PrestamoService implements IPrestamoService{
     }
  
     @Override
-    public Prestamo guardPrestamo(Prestamo prestamo) {
+    public Prestamo guardarPrestamo(Prestamo prestamo) {
         return prestamoRepository.save(prestamo);
     }
  

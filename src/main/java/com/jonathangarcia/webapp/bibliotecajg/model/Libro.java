@@ -26,6 +26,6 @@ public class Libro {
     private Boolean disponibilidad;
     private String numEstanteria;
     private String cluster;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Categoria categoria;
 }

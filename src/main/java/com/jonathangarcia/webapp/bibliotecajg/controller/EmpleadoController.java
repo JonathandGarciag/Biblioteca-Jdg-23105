@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,9 @@ import com.jonathangarcia.webapp.bibliotecajg.service.EmpleadoService;
 @Controller
 @RestController
 @RequestMapping("empleado")
+@CrossOrigin(value = "http://127.0.0.1:5500")
 public class EmpleadoController {
+
     @Autowired
     EmpleadoService empleadoService;
 
@@ -35,10 +38,10 @@ public class EmpleadoController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Empleado> buscarEmpleados(@PathVariable Long id){
+    @GetMapping("/id={id}")
+    public ResponseEntity<Empleado> buscarEmpleadoPorId(@PathVariable Long id){
         try {
-            Empleado empleado = empleadoService.buscarEmpleados(id);
+            Empleado empleado = empleadoService.buscarEmpleadoPorId(id);
             return ResponseEntity.ok(empleado);    
         } catch (Exception e) {
             return ResponseEntity.ok().body(null);    
@@ -68,14 +71,14 @@ public class EmpleadoController {
     public ResponseEntity <Map<String, String>> editarEmpleado(@PathVariable Long id, @RequestBody Empleado empleadoNuevo){
         Map<String, String> response = new HashMap<>();
         try {
-            Empleado empleado = empleadoService.buscarEmpleados(id);
+            Empleado empleado = empleadoService.buscarEmpleadoPorId(id);
             empleado.setNombre(empleadoNuevo.getNombre());
             empleado.setApellido(empleadoNuevo.getApellido());
             empleado.setTelefono(empleadoNuevo.getTelefono());
             empleado.setDpi(empleadoNuevo.getDpi());
             empleado.setDireccion(empleadoNuevo.getDireccion());
             if (!empleadoService.verificarDpiDuplicado(empleadoNuevo)) {
-                empleadoService.guardarEmpleado(empleadoNuevo);
+                empleadoService.guardarEmpleado(empleado);
                 response.put("message", "Se edito los datos con exito");
                 return ResponseEntity.ok(response);
             } else{
@@ -93,7 +96,7 @@ public class EmpleadoController {
     public ResponseEntity <Map<String, Boolean>> eliminarEmpleado(@PathVariable Long id){
         Map<String, Boolean> response = new HashMap<>();
         try {
-            Empleado empleado = empleadoService.buscarEmpleados(id);
+            Empleado empleado = empleadoService.buscarEmpleadoPorId(id);
             empleadoService.eliminarEmpleado(empleado);
             response.put("Se elimino el empleado con exito", Boolean.TRUE);
             return ResponseEntity.ok(response);
